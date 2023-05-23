@@ -22,9 +22,9 @@ class Huerta{
 	
 	method esBueno() = capacidadProd > produccionMedia.nivel()
 	method recibirAtaque(plaga) {
-		capacidadProd -= plaga.nivelDanio() * 0.1
+		capacidadProd = 0.max(capacidadProd-plaga.nivelDanio() * 0.1)
 		if(plaga.transEnfermedades()){
-			capacidadProd -= 10
+			capacidadProd = 0.max(capacidadProd-10)
 		}
 		plaga.realizoAtaque()
 	}	
@@ -36,7 +36,7 @@ class Mascota{
 	method esBueno() = nivelSalud > 250
 	method recibirAtaque(plaga) {
 		if(plaga.transEnfermedades()) {
-			nivelSalud -= plaga.nivelDanio()
+			nivelSalud = 0.max(nivelSalud-plaga.nivelDanio())
 		}  
 		plaga.realizoAtaque()
 	}
@@ -45,9 +45,8 @@ class Mascota{
 class Barrio{
 	const elementos = []
 	
-	method agregarElemento(elem){
-		elementos.add(elem)
-	}
+	method agregarElemento(elem){elementos.add(elem)}
+	method eliminarElemento(elem){elementos.remove(elem)}
 	method verElementos() = elementos
 	method esCopado() = self.cantElementosBuenos() > self.cantElementosNoBuenos()
 	method cantElementosBuenos() = elementos.count({e => e.esBueno()})
